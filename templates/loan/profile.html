@@ -1,0 +1,131 @@
+{% extends '../master.html' %}
+{% load mathfilters %}
+{% load staticfiles %}
+
+    {% block content %}
+
+        <section class="content-header">
+          <h1>
+            {{ loans.name }}'s Profile:
+          </h1>
+        </section>
+
+        <section class="content">
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-xs-12 text-center">
+              <div class="box box-info">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Profile Details</h3>
+                </div>
+
+                <table id="user_details" class="table table-bordered table-striped">
+                  <tbody>
+                      <tr>
+                        <th>User No.</th>
+                        <td>{{ loans.id }}</td>
+                      </tr>
+                      <tr>
+                        <th>Address</th>
+                        <td>{{ loans.address }}</td>
+                      </tr>
+                      <tr>
+                        <th>NID No</th>
+                        <td>{{ loans.nid }}</td>
+                      </tr>
+                      <tr>
+                        <th>Total Loan</th>
+                        <td>{{ loans.amount|mul:1.2 }}</td>
+                      </tr>
+                      <tr>
+                        <th>Weekly Loan</th>
+                        <td>{{ loans.amount|mul:1.2|div:12 }}</td>
+                      </tr>
+                      <tr>
+                        <th>Joining Date</th>
+                        <td>{{ loans.join_date|date:"d M, Y" }}</td>
+                      </tr>
+                      <tr>
+                        <th>Loan Started Week</th>
+                        <td>
+                            {% if loans.join_date|date:'W' > '33' %}
+                              {{ loans.join_date|date:'W'|add:'-33' }}
+                            {% else %}
+                              {{ loans.join_date|date:'W'|add:'19' }}
+                            {% endif %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Reffernced By</th>
+                        <td>{{ loans.reference.name }}</td>
+                      </tr>
+                      <tr>
+                        <th>Status</th>
+                        <td>
+                          {% if overdue > 4 %}
+                            <span class="label label-danger">Inactive</span>
+                          {% elif overdue > 1 %}
+                            <span class="label label-warning">Has Due</span>
+                          {% elif overdue == 1 %}
+                            <span class="label label-primary">Delayed</span>
+                          {% else %}
+                            <span class="label label-success">Perfect</span>
+                          {% endif %}
+                        </td>
+                      </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+
+            <div class="col-lg-6 col-md-6 col-xs-12">
+              <div class="box box-widget widget-user-2">
+                <div class="widget-user-header bg-green">
+                  <h3 class="text-center">Installment History</h3>
+                </div>
+                <div class="box-footer no-padding">
+                  <table id="user_details" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                          <th>Week No</th>
+                          <th>Date</th>
+                          <th>Installment Paid</th>
+                          <th>Paid To</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                      {% for i in ins %}
+
+                        <tr>
+                          <td>
+                            {% if i.pay_date|date:'W' > '33' %}
+                              {{ i.pay_date|date:'W'|add:'-33' }}
+                            {% else %}
+                              {{ i.pay_date|date:'W'|add:'33' }}
+                            {% endif %}
+                          </td>
+                          <td>{{ i.pay_date }}</td>
+                          <td>{{ i.installment }}</td>
+                          <td>{{ i.pay_to.name }}</td>
+                        </tr>
+
+                      {% endfor %}
+
+                    </tbody>
+                    <thead>
+                        <tr>
+                          <th>Week No</th>
+                          <th>Date</th>
+                          <th>Installment Paid</th>
+                          <th>Paid To</th>
+                        </tr>
+                    </thead>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+    {% endblock %}

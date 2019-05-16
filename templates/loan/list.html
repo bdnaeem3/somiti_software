@@ -1,0 +1,96 @@
+{% extends '../master.html' %}
+{% load mathfilters %}
+
+    {% block content %}
+
+      <section class="content-header">
+        <h1>
+            Loan List:
+        </h1>
+      </section>
+
+      <section class="content">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="box">
+              <div class="box-body">
+                <table id="datatable" class="table table-bordered table-striped">
+                  <thead>
+                    <tr>
+                      <th>Sl No.</th>
+                      <th>Name</th>
+                      <th>Address</th>
+                      <th>Mobile No</th>
+                      <th>Loan Amount</th>
+                      <th>Loan Started Week</th>
+                      <th>Loan Paid</th>
+                      <th>Loan Due</th>
+                      <th>Referenced By</th>
+                      <th>More Details</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    {% for loan in loans %}
+
+                      <tr>
+                        <td>{{ loan.id }}</td>
+                        <td>{{ loan.name }}</td>
+                        <td>{{ loan.address }}</td>
+                        <td>{{ loan.mobile }}</td>
+                        <td>{{ loan.amount|mul:1.2 }}</td>
+                        <td>
+                            {% if loan.join_date|date:'W' > '33' %}
+                              {{ loan.join_date|date:'W'|add:'-33' }}
+                            {% else %}
+                              {{ loan.join_date|date:'W'|add:'19' }}
+                            {% endif %}
+                        </td>
+                        <td>{{ loan.loan_paid }}</td>
+                        <td>{{ loan.overdue }}</td>
+                        <td>{{ loan.reference }}</td>
+                        <td>
+                            <a href="{% url 'loan_profile' loan.id %}" class="btn btn-default">
+                                View Details
+                            </a>
+                        </td>
+                        <td>
+                          {% if loan.overdue > 4 %}
+                            <span class="label label-danger">Inactive</span>
+                          {% elif loan.overdue > 1 %}
+                            <span class="label label-warning">Has Due</span>
+                          {% elif loan.overdue == 1 %}
+                            <span class="label label-primary">Delayed</span>
+                          {% else %}
+                            <span class="label label-success">Perfect</span>
+                          {% endif %}
+                        </td>
+                      </tr>
+
+                    {% endfor %}
+
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th>Sl No.</th>
+                      <th>Name</th>
+                      <th>Address</th>
+                      <th>Mobile No</th>
+                      <th>Loan Amount</th>
+                      <th>Loan Started Week</th>
+                      <th>Loan Paid</th>
+                      <th>Loan Due</th>
+                      <th>Referenced By</th>
+                      <th>More Details</th>
+                      <th>Status</th>
+                    </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  {% endblock %}

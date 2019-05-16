@@ -1,0 +1,108 @@
+{% extends '../master.html' %}
+{% load mathfilters %}
+{% load staticfiles %}
+
+    {% block content %}
+
+        <section class="content-header">
+          <h1>
+            {{ reference.name }}'s Profile:
+          </h1>
+        </section>
+
+        <section class="content">
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-xs-12 text-center">
+              <div class="box box-info">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Profile Details</h3>
+                </div>
+
+                <table id="user_details" class="table table-bordered table-striped">
+                  <tbody>
+                      <tr>
+                        <th>User No.</th>
+                        <td>{{ reference.id }}</td>
+                      </tr>
+                      <tr>
+                        <th>Address</th>
+                        <td>{{ reference.address }}</td>
+                      </tr>
+                      <tr>
+                        <th>Mobile No</th>
+                        <td>{{ reference.mobile }}</td>
+                      </tr>
+                      <tr>
+                        <th>NID No</th>
+                        <td>{{ reference.nid }}</td>
+                      </tr>
+                      <tr>
+                        <th>Loan Reference</th>
+                        <td>{{ reference.loan_set.count }}</td>
+                      </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+
+            <div class="col-lg-6 col-md-6 col-xs-12">
+              <div class="box box-widget widget-user-2">
+                <div class="widget-user-header bg-green">
+                  <h3 class="text-center">Loan Reference List</h3>
+                </div>
+                <div class="box-footer no-padding">
+                  <table id="user_details" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Joining Date</th>
+                          <th>Loan Amount</th>
+                          <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                      {% for loan in loans %}
+
+                        <tr>
+                          <td>{{ loan.name }}</td>
+                          <td>{{ loan.join_date }}</td>
+                          <td>{{ loan.amount }}</td>
+                          <td>
+                            {% if loan.overdue > 4 %}
+                              <span class="label label-danger">Inactive</span>
+                            {% elif loan.overdue > 1 %}
+                              <span class="label label-warning">Has Due</span>
+                            {% elif loan.overdue == 1 %}
+                              <span class="label label-primary">Delayed</span>
+                            {% else %}
+                              <span class="label label-success">Perfect</span>
+                            {% endif %}
+                          </td>
+                          <td>
+                            <a href="{% url 'loan_profile' loan.id %}" class="btn btn-default">
+                                View Details
+                            </a>
+                          </td>
+                        </tr>
+
+                      {% endfor %}
+
+                    </tbody>
+                    <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Joining Date</th>
+                          <th>Loan Amount</th>
+                          <th>Status</th>
+                        </tr>
+                    </thead>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+    {% endblock %}

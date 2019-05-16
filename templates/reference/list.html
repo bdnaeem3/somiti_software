@@ -1,0 +1,92 @@
+{% extends '../master.html' %}
+
+    {% block content %}
+
+      <section class="content-header">
+        <h1>
+            Reference:
+        </h1>
+      </section>
+
+      <section class="content">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="box">
+              <div class="box-body">
+                <table id="datatable" class="table table-bordered table-striped">
+                  <thead>
+                      <tr>
+                        <th>Sl No.</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Mobile No</th>
+                        <th>NID No</th>
+                        <th>Loan Refference</th>
+                        <th>Status</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+
+                    {% for reference in references %}
+                      <tr>
+                        <td>{{ reference.id }}</td>
+                        <td>
+                          {% if reference.savings.name %}
+                            {{ reference.savings.name }}
+                          {% else %}
+                            {{ reference.name }}
+                          {% endif %}
+                        </td>
+                        <td>
+                          {% if reference.savings.address %}
+                            {{ reference.savings.address }}
+                          {% else %}
+                            {{ reference.address }}
+                          {% endif %}
+                        </td>
+                        <td>
+                          {% if reference.savings.mobile %}
+                            {{ reference.savings.mobile }}
+                          {% else %}
+                            {{ reference.mobile }}
+                          {% endif %}
+                        </td>
+                        <td>
+                          {% if reference.savings.nid %}
+                            {{ reference.savings.nid }}
+                          {% else %}
+                            {{ reference.address }}
+                          {% endif %}
+                        </td>
+                        <td>
+                          {{ reference.loan_set.count }}
+                        </td>
+                        <td>
+                            <a href="{% url 'reference_profile' reference.id %}" class="btn btn-default">
+                                View Details
+                            </a>
+                        </td>
+                      </tr>
+                    {% endfor %}
+
+                  </tbody>
+
+                  <tfoot>
+                    <tr>
+                      <th>Sl No.</th>
+                      <th>Name</th>
+                      <th>Address</th>
+                      <th>Mobile No</th>
+                      <th>NID No</th>
+                      <th>Loan Refference</th>
+                      <th>Status</th>
+                    </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  {% endblock %}
