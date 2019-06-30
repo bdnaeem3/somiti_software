@@ -1,0 +1,5 @@
+*.pyc
+.idea
+**/__pycache__
+**cpython-37.pyc
+mydatabase

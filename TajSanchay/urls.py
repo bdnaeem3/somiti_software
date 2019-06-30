@@ -28,4 +28,5 @@ urlpatterns = [
     path('loan/', include('loan.urls')),
     path('reference/', include('reference.urls')),
     path('savings/', include('savings.urls')),
+    path('loans/', views.loan_listing.as_view()),
 ]
