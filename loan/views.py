@@ -66,8 +66,11 @@ def list(request):
         if (loan_paid + overdue) < 12:
             due.append(l)
 
+    print(current_week)
+    print(start_week)
+
     context = {
-        'loans': due,
+        'loans': ls,
     }
 
     return render(request, 'loan/list.html', context)
